@@ -2,7 +2,7 @@
  * AWS SNS Terraform Module
  * =====================
  *
- * Create AWS SNS topic and set policy
+ * Create multiple AWS SNS topics and set policies
  *
  * Usage:
  * ------
