@@ -14,15 +14,17 @@
  * '''
 **/
 
-# TODO: Add namespacing
-
 // AWS Account Id
 data "aws_caller_identity" "current" {}
 
 resource "aws_sns_topic" "this" {
   count         = "${length(var.names)}"
-  name          = "${element(var.names, count.index)}"
-  display_name  = "${replace(element(var.names, count.index), "-", "")}"
+  name          = "${var.namespaced ?
+    format("%s-%s", var.environment, element(var.names, count.index)) :
+    format("%s", element(var.names, count.index))}"
+  display_name  = "${var.namespaced ?
+    format("%s-%s", var.environment, replace(element(var.names, count.index), "-", "")) :
+    format("%s", replace(element(var.names, count.index), "-", ""))}"
   # policy - Use policy cmd instead
   # delivery_policy # For http
 }
