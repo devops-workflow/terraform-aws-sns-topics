@@ -14,7 +14,7 @@ module "sns-multi" {
 /*
 module "sns-condition" {
   source      = ".."
-  names       = "${var.environment == "dev" ? ["topic-1", "topic2"] : []}"
+  names       = "${var.environment == "dev" ? list("topic-1", "topic2") : list("")}"
   environment = "${var.environment}"
 }
 */
