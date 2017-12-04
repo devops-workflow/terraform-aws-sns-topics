@@ -1,4 +1,10 @@
 
+module "sns-none" {
+  source      = ".."
+  names       = []
+  environment = "${var.environment}"
+}
+
 module "sns-single" {
   source      = ".."
   names       = ["topic"]
