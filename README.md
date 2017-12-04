@@ -3,6 +3,8 @@ AWS SNS Topics Terraform module
 
 Terraform module which creates SNS topics on AWS.
 
+Terraform registry: https://registry.terraform.io/modules/devops-workflow/sns-topics/aws
+
 Usage
 -----
 
