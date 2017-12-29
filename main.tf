@@ -13,12 +13,37 @@
  *     }
  * '''
 **/
+# https://www.terraform.io/docs/providers/aws/r/aws_sns_topic.html
+# https://www.terraform.io/docs/providers/aws/r/aws_sns_topic_policy.html
+# https://www.terraform.io/docs/providers/aws/r/aws_sns_topic_subscription.html
+
+module "enabled" {
+  source  = "devops-workflow/boolean/local"
+  version = "0.1.1"
+  value   = "${var.enabled}"
+}
+/*
+module "label" {
+  source        = "devops-workflow/label/local"
+  version       = "0.1.3"
+  organization  = "${var.organization}"
+  name          = "${var.name}"
+  namespace-env = "${var.namespace-env}"
+  namespace-org = "${var.namespace-org}"
+  environment   = "${var.environment}"
+  delimiter     = "${var.delimiter}"
+  attributes    = "${var.attributes}"
+  tags          = "${var.tags}"
+}
+*/
 
 // AWS Account Id
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+  count         = "${module.enabled.value}"
+}
 
 resource "aws_sns_topic" "this" {
-  count         = "${length(var.names)}"
+  count         = "${module.enabled.value ? length(var.names) : 0}"
   name          = "${var.namespaced ?
     format("%s-%s", var.environment, element(var.names, count.index)) :
     format("%s", element(var.names, count.index))}"
@@ -30,7 +55,7 @@ resource "aws_sns_topic" "this" {
 }
 
 resource "aws_sns_topic_policy" "default" {
-  count   = "${length(var.names)}"
+  count   = "${module.enabled.value ? length(var.names) : 0}"
   arn     = "${element(aws_sns_topic.this.*.arn, count.index)}"
   policy  = "${element(data.aws_iam_policy_document.sns-topic-policy.*.json, count.index)}"
 }
@@ -40,7 +65,7 @@ resource "aws_sns_topic_policy" "default" {
 
 data "aws_iam_policy_document" "sns-topic-policy" {
   # Not allowed to use count?? Need to put in topic? :( How to ref arn?
-  count   = "${length(var.names)}"
+  count   = "${module.enabled.value ? length(var.names) : 0}"
   policy_id = "__default_policy_ID"
   statement {
     actions = [

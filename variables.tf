@@ -12,3 +12,8 @@ variable "namespaced" {
   description = "Namespace all resources (prefixed with the environment)?"
   default     = true
 }
+
+variable "enabled" {
+  description = "Set to false to prevent the module from creating anything"
+  default     = true
+}
