@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/devops-workflow/terraform-aws-sns-topics?style=svg)](https://circleci.com/gh/devops-workflow/terraform-aws-sns-topics)
+
 AWS SNS Topics Terraform module
 ========================
 

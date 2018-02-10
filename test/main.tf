@@ -1,4 +1,3 @@
-
 module "sns-none" {
   source      = ".."
   names       = []
@@ -24,3 +23,4 @@ module "sns-condition" {
   environment = "${var.environment}"
 }
 */
+
